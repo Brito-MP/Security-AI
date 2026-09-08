@@ -1,5 +1,5 @@
-from pydantic import BaseModel
-from typing import List
+from pydantic import BaseModel, Field
+from typing import List, Literal
 
 
 class AttackDefinition(BaseModel):
@@ -8,11 +8,11 @@ class AttackDefinition(BaseModel):
     category: str
     description: str
 
-    severity: str
+    severity: Literal["low", "medium", "high", "critical"]
 
     payload: str
 
     owasp: List[str]
     mitre: List[str]
 
-    tags: List[str] = []
+    tags: List[str] = Field(default_factory=list)
