@@ -3,7 +3,7 @@ from pathlib import Path
 import pytest
 from pydantic import ValidationError
 
-from aegis.attacks.loader import load_attack
+from aegis.attacks.loader import load_attack, load_attack_suite
 
 
 ATTACK_LIBRARY = Path("attack-library/prompt-injection")
@@ -54,3 +54,12 @@ mitre: []
 
     with pytest.raises(ValidationError):
         load_attack(file)
+
+def test_load_attack_suite():
+    attacks = load_attack_suite(ATTACK_LIBRARY)
+
+    assert len(attacks) == 3
+
+    assert attacks[0].id == "PI-001"
+    assert attacks[1].id == "PI-002"
+    assert attacks[2].id == "PI-003"
