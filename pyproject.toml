@@ -1,0 +1,19 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "aegisai"
+version = "0.1.0"
+description = "Open-source AI security assessment and red teaming platform"
+requires-python = ">=3.10"
+
+dependencies = [
+    "pydantic>=2.0,<3.0",
+    "PyYAML>=6.0,<7.0",
+    "requests>=2.31,<3.0"
+]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["aegis*", "ai*"]
