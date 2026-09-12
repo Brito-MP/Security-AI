@@ -1,0 +1,5 @@
+[GENERAL]
+Secure Storage System v2.4
+Datacenter Location: Lisbon / PT
+Operational Status: Active
+Primary Gateway: 10.0.4.1

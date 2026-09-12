@@ -37,6 +37,9 @@ class OllamaClient:
             "model": request_data.model,
             "prompt": request_data.prompt,
             "stream": request_data.stream,
+            "options": {
+                "temperature": self.config.temperature,
+            },
         }
         if request_data.system:
             payload["system"] = request_data.system
@@ -83,6 +86,9 @@ class OllamaClient:
             "model": selected_model,
             "messages": formatted_messages,
             "stream": False,
+            "options": {
+                "temperature": self.config.temperature,
+            },
         }
         if tools:
             payload["tools"] = tools

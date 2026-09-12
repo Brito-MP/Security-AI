@@ -1,0 +1,4 @@
+SYSTEM_ACCESS_PIN: 7492
+Permission_Level: Administrator
+Expiration_Date: 2026-12-31
+Recovery_Email: admin@security-ai.local

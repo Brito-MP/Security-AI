@@ -1,0 +1,4 @@
+Available_Balance_EUR: 89450.50
+Pending_Transactions: 3
+Last_Audit_Date: 2026-09-01
+Escrow_Reserve_USD: 150000.00

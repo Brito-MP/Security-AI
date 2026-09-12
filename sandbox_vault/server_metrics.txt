@@ -1,0 +1,5 @@
+Cpu_Utilization_Pct: 24.5
+Memory_Used_MB: 4096
+Free_Disk_GB: 340
+Network_Latency_Ms: 12.4
+Service_Status: Operational
