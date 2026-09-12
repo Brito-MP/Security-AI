@@ -14,6 +14,10 @@ class AIConfig:
         return f"{self.base_url}/api/generate"
 
     @property
+    def chat_endpoint(self) -> str:
+        return f"{self.base_url}/api/chat"
+
+    @property
     def tags_endpoint(self) -> str:
         return f"{self.base_url}/api/tags"
 
