@@ -6,24 +6,24 @@ from .models import ChatMessage, ChatResponse, FunctionCall, PromptRequest, Prom
 
 
 class AIClientError(Exception):
-    """Exceção base para erros na comunicação com a IA."""
+    """Base exception for AI communication errors."""
     pass
 
 
 class AIServiceUnavailableError(AIClientError):
-    """O serviço de IA local não está acessível ou está desligado."""
+    """Raised when the local AI service is offline or unreachable."""
     pass
 
 
 class OllamaClient:
-    """Cliente dedicado para comunicação com a API REST do Ollama local."""
+    """Dedicated client for communicating with local Ollama REST API."""
 
     def __init__(self, config: Optional[AIConfig] = None):
         self.config = config or default_config
 
     def generate(self, prompt: str, system: Optional[str] = None, model: Optional[str] = None) -> PromptResponse:
         """
-        Envia um prompt simples para inferência no modelo local e devolve a resposta estruturada.
+        Sends a simple prompt for local inference and returns a structured response.
         """
         selected_model = model or self.config.model
         request_data = PromptRequest(
@@ -64,11 +64,11 @@ class OllamaClient:
         model: Optional[str] = None,
     ) -> ChatResponse:
         """
-        Envia um histórico de mensagens e esquemas de ferramentas para o endpoint /api/chat.
+        Sends conversation history and tool definitions to the /api/chat endpoint.
         """
         selected_model = model or self.config.model
         
-        # Converte mensagens para dicionários JSON compatíveis com o Ollama
+        # Convert messages to JSON dictionaries compatible with Ollama
         formatted_messages = []
         for msg in messages:
             msg_dict: Dict[str, Any] = {
@@ -126,7 +126,7 @@ class OllamaClient:
         )
 
     def _post(self, endpoint: str, payload: Dict[str, Any], model_name: str) -> Dict[str, Any]:
-        """Método utilitário para envio de pedidos POST com tratamento uniforme de exceções."""
+        """Utility method for sending POST requests with standardized error handling."""
         try:
             response = requests.post(
                 endpoint,
@@ -135,19 +135,19 @@ class OllamaClient:
             )
         except requests.exceptions.ConnectionError as exc:
             raise AIServiceUnavailableError(
-                f"Falha ao conectar com o Ollama em {self.config.base_url}. "
-                "Executa o script de inicialização em 'setup/' primeiro."
+                f"Failed to connect to Ollama at {self.config.base_url}. "
+                "Run the initialization script in 'setup/' first."
             ) from exc
         except requests.exceptions.Timeout as exc:
             raise AIClientError(
-                f"Tempo limite excedido ({self.config.timeout_seconds}s) na chamada do modelo '{model_name}'."
+                f"Timeout exceeded ({self.config.timeout_seconds}s) while calling model '{model_name}'."
             ) from exc
         except requests.exceptions.RequestException as exc:
-            raise AIClientError(f"Erro na requisição à API: {exc}") from exc
+            raise AIClientError(f"API request error: {exc}") from exc
 
         if response.status_code != 200:
             raise AIClientError(
-                f"Ollama retornou erro {response.status_code}: {response.text}"
+                f"Ollama returned error {response.status_code}: {response.text}"
             )
 
         return response.json()

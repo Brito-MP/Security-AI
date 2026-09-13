@@ -1,32 +1,32 @@
-# Passo a Passo: Configuração e Arranque da IA Local
+# Step-by-Step Guide: Local AI Setup and Initialization
 
-Este diretório contém os scripts de automação para inicializar o motor de inteligência artificial local com o **Ollama** e preparar o modelo **`llama3.2:1b`**.
+This directory contains automation scripts to initialize the local Ollama AI engine and prepare the **`qwen3.5:4b`** model (or lightweight alternatives such as `qwen3.5:1b` / `qwen2.5:3b`).
 
 ---
 
-## 1. Pré-Requisitos
-1. **Instalar o Ollama**: Descarrega e instala a partir de [https://ollama.com](https://ollama.com).
-2. **Ambiente Python**: Garante que tens Python 3.10+ e instala as dependências na raiz do projeto:
+## 1. Prerequisites
+1. **Install Ollama**: Download and install from [https://ollama.com](https://ollama.com).
+2. **Python Environment**: Ensure Python 3.10+ is available and install dependencies:
    ```powershell
    pip install -r requirements.txt
    ```
 
 ---
 
-## 2. Inicialização Rápida
+## 2. Quick Initialization
 
-Podes escolher o método de acordo com o teu sistema:
+Choose the appropriate command for your OS:
 
-### Windows (PowerShell - Recomendado)
+### Windows (PowerShell - Recommended)
 ```powershell
 .\setup\setup_ai.ps1
 ```
-*Dica:* Para usar outro modelo no futuro, basta passar o parâmetro `-Model`:
+*Tip:* You can override the default model with the `-Model` parameter:
 ```powershell
-.\setup\setup_ai.ps1 -Model "phi3.5"
+.\setup\setup_ai.ps1 -Model "qwen3.5:1b"
 ```
 
-### Windows (Prompt de Comando / CMD)
+### Windows (Command Prompt / CMD)
 ```cmd
 setup\setup_ai.bat
 ```
@@ -39,20 +39,19 @@ chmod +x setup/setup_ai.sh
 
 ---
 
-## 3. Gestão do Ciclo de Vida da IA
+## 3. AI Lifecycle Management
 
-| Ação | Duplo-clique (Windows Explorer) | Linha de Comandos (PowerShell) |
+| Action | Double-click (Explorer) | Command Line (PowerShell) |
 | :--- | :--- | :--- |
-| **Iniciar IA** | `setup\setup_ai.bat` | `.\setup\setup_ai.ps1` |
-| **Verificar Estado** | `setup\check_status.bat` | `.\setup\check_status.ps1` |
-| **Desligar IA** | `setup\stop_ai.bat` | `.\setup\stop_ai.ps1` |
+| **Start AI** | `setup\setup_ai.bat` | `.\setup\setup_ai.ps1` |
+| **Check Status** | `setup\check_status.bat` | `.\setup\check_status.ps1` |
+| **Stop AI** | `setup\stop_ai.bat` | `.\setup\stop_ai.ps1` |
 
 ---
 
-## 4. O que os scripts fazem automaticamente
+## 4. Script Automated Workflow
 
-1. **Deteção**: Validam se o binário `ollama` está instalado e acessível no `PATH`.
-2. **Arranque do Servidor**: Verificam se o servidor já está a escutar na porta `11434`. Se não estiver, iniciam `ollama serve` em segundo plano e aguardam até o endpoint estar responsivo.
-3. **Download do Modelo**: Verificam se o modelo `llama3.2:1b` já se encontra localmente. Se não estiver, executam automaticamente `ollama pull llama3.2:1b`.
-4. **Encerramento Limpo**: O script `stop_ai.*` fecha os processos do Ollama libertando a memória RAM e VRAM da GPU.
-
+1. **Detection**: Validates that the `ollama` CLI binary is installed and present in `PATH`.
+2. **Server Startup**: Checks if the API is listening on port `11434`. If offline, spawns `ollama serve` in the background and waits for endpoint readiness.
+3. **Model Verification & Download**: Confirms whether the target model (default: `qwen3.5:4b`) is present. If missing, pulls it automatically.
+4. **Clean Shutdown**: The `stop_ai.*` scripts terminate background Ollama processes to free RAM and GPU VRAM.

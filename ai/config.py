@@ -4,9 +4,9 @@ import os
 
 @dataclass(frozen=True)
 class AIConfig:
-    """Configurações do motor de Inteligência Artificial local."""
+    """Configuration settings for the local AI engine."""
     base_url: str = os.getenv("OLLAMA_BASE_URL", "http://127.0.0.1:11434")
-    model: str = os.getenv("OLLAMA_MODEL", "llama3.2:1b")
+    model: str = os.getenv("OLLAMA_MODEL", "qwen3.5:4b")
     timeout_seconds: int = int(os.getenv("OLLAMA_TIMEOUT", "60"))
     temperature: float = float(os.getenv("OLLAMA_TEMPERATURE", "0.3"))
 

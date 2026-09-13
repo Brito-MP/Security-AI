@@ -9,11 +9,10 @@ except ImportError:
     from ai.models import HealthStatus
 
 
-
 def check_ai_service(config: Optional[AIConfig] = None) -> HealthStatus:
     """
-    Verifica se o servidor Ollama está online e lista os modelos disponíveis
-    sem consumir tokens nem invocar inferência.
+    Checks if the local Ollama server is online and queries available models
+    without triggering model inference or consuming tokens.
     """
     cfg = config or default_config
 
@@ -30,12 +29,12 @@ def check_ai_service(config: Optional[AIConfig] = None) -> HealthStatus:
         return HealthStatus(
             is_online=False,
             status_code=response.status_code,
-            error_message=f"Servidor retornou código {response.status_code}",
+            error_message=f"Server returned status code {response.status_code}",
         )
     except requests.exceptions.ConnectionError:
         return HealthStatus(
             is_online=False,
-            error_message=f"Não foi possível ligar a {cfg.base_url}. O Ollama está em execução?",
+            error_message=f"Failed to connect to {cfg.base_url}. Is the Ollama service running?",
         )
     except Exception as exc:
         return HealthStatus(
@@ -45,12 +44,11 @@ def check_ai_service(config: Optional[AIConfig] = None) -> HealthStatus:
 
 
 def is_model_available(model_name: str, config: Optional[AIConfig] = None) -> bool:
-    """Verifica se um modelo específico está carregado no servidor local."""
+    """Checks whether a specific model tag is available in the local Ollama registry."""
     status = check_ai_service(config)
     if not status.is_online:
         return False
     
-    # Modelos no Ollama podem ter tags como ":latest" ou versão explícita
     target = model_name.lower()
     return any(target in m.lower() for m in status.available_models)
 
@@ -58,16 +56,15 @@ def is_model_available(model_name: str, config: Optional[AIConfig] = None) -> bo
 if __name__ == "__main__":
     status = check_ai_service()
     print("=" * 45)
-    print("        ESTADO DA IA LOCAL (OLLAMA)")
+    print("        LOCAL AI STATUS (OLLAMA)")
     print("=" * 45)
     if status.is_online:
-        print(f" [ESTADO]  ONLINE (HTTP {status.status_code})")
+        print(f" [STATUS]  ONLINE (HTTP {status.status_code})")
         print(f" [URL]     {default_config.base_url}")
-        print(" [MODELOS DISPONÍVEIS]:")
+        print(" [AVAILABLE MODELS]:")
         for m in status.available_models:
             print(f"   • {m}")
     else:
-        print(" [ESTADO]  OFFLINE")
-        print(f" [MOTIVO]  {status.error_message}")
+        print(" [STATUS]  OFFLINE")
+        print(f" [REASON]  {status.error_message}")
     print("=" * 45)
-

@@ -1,37 +1,37 @@
 # Security-AI
 
-Framework modular para auditoria de segurança, avaliação de vulnerabilidades e testes automatizados de *Prompt Injection* contra modelos de linguagem locais e remotos.
+Modular framework for security auditing, vulnerability evaluation, and automated *Prompt Injection* testing against local and remote Large Language Models.
 
 ---
 
-## Estrutura do Projeto
+## Project Structure
 
-- **`aegis/`**: Núcleo do framework de segurança e orquestrador de testes.
-- **`attack-library/`**: Catálogo de ataques em formato YAML (ex: OWASP LLM01, MITRE ATLAS).
-- **`ai/`**: Módulo isolado de comunicação com o motor de inferência (Ollama local configurado com `temperature: 0.3`).
-  - *Nota*: O modelo futuro padrão adotado pelo projeto é o **`Qwen3.5-4B`** (com suporte excelente para *Tool Calling* / *Function Calling*, leveza para CPU/iGPU/dGPU e prevenção de alucinações).
-- **`reports/`**: Relatórios técnicos, auditorias de incidentes e Architecture Decision Records (ADRs).
-  - Consulta o [Índice de Relatórios](file:///c:/Users/Pedro/source/repos/Security-AI/reports/README.md) e o [ADR-001 de Alucinação e Migração](file:///c:/Users/Pedro/source/repos/Security-AI/reports/adr_001_llm_hallucination_and_migration.md).
-- **`setup/`**: Scripts de ciclo de vida do ambiente (iniciar, verificar estado e desligar a IA).
-  - Consulta o [Guia de Setup](file:///c:/Users/Pedro/source/repos/Security-AI/setup/README.md).
-- **`tests/`**: Suite de testes automatizados com `pytest` (unitários e ataques).
-  - Consulta o [Guia de Execução dos Testes](file:///c:/Users/Pedro/source/repos/Security-AI/tests/README.md).
+- **`aegis/`**: Core security evaluation framework and test orchestrator.
+- **`attack-library/`**: YAML attack catalog (e.g. OWASP LLM01, MITRE ATLAS).
+- **`ai/`**: Isolated AI inference client module (default: `qwen3.5:4b` with `temperature: 0.3`).
+- **`sandbox_vault/`**: Protected filesystem sandbox directory holding monitored system and business data.
+- **`reports/`**: Technical evaluation reports, incident logs, and Architecture Decision Records (ADRs).
+  - See [Reports Index](file:///c:/Users/Pedro/source/repos/Security-AI/reports/README.md) and [ADR-001 (Hallucination Analysis & Migration)](file:///c:/Users/Pedro/source/repos/Security-AI/reports/adr_001_llm_hallucination_and_migration.md).
+- **`setup/`**: Environment lifecycle scripts (start, check status, and stop local AI service).
+  - See [Setup Guide](file:///c:/Users/Pedro/source/repos/Security-AI/setup/README.md).
+- **`tests/`**: Automated test suite with `pytest` (unit and attack tests).
+  - See [Test Guide](file:///c:/Users/Pedro/source/repos/Security-AI/tests/README.md).
 
 ---
 
-## Início Rápido
+## Quick Start
 
-1. **Iniciar a IA local (`Qwen3.5-4B` / `llama3.2:1b`):**
+1. **Start Local AI (`qwen3.5:4b`):**
    ```powershell
    .\setup\setup_ai.ps1
    ```
 
-2. **Executar a consola interativa do agente (com leitura de ficheiros):**
+2. **Run Interactive Agent Console (with Tool Calling):**
    ```powershell
    .\.venv\Scripts\python.exe scripts/interactive_agent.py
    ```
 
-3. **Executar os testes:**
+3. **Run Automated Tests:**
    ```powershell
    .\.venv\Scripts\pytest
    ```

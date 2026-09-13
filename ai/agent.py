@@ -7,8 +7,8 @@ from .tools import ToolRegistry
 
 class AIAgent:
     """
-    Orquestrador de execução do Modelo com ferramentas.
-    Mantém o histórico do diálogo da sessão e executa o ciclo de Tool Calling.
+    Orchestrates interaction between the LLM and registered tools.
+    Maintains session message history and executes the iterative Tool Calling loop.
     """
 
     def __init__(
@@ -25,7 +25,7 @@ class AIAgent:
 
     def run(self, user_prompt: str) -> str:
         """
-        Executa um prompt até obter uma resposta final da IA, resolvendo chamadas de ferramentas se necessário.
+        Executes a prompt until a final response is generated, resolving any tool calls along the way.
         """
         messages: List[ChatMessage] = []
         if self._system_prompt:
@@ -43,20 +43,19 @@ class AIAgent:
             assistant_msg = chat_resp.message
             messages.append(assistant_msg)
 
-            # Se o modelo não pediu execução de ferramentas, terminamos o ciclo
+            # Terminate loop if the model did not request any tool calls
             if not assistant_msg.tool_calls:
                 return assistant_msg.content
 
-            # Executa as ferramentas solicitadas pelo modelo
+            # Execute tool calls requested by the model
             for tc in assistant_msg.tool_calls:
                 fn_name = tc.function.name
                 fn_args = tc.function.arguments
                 result_str = self._tools.execute(fn_name, fn_args)
 
-                # Anexa o resultado da ferramenta à conversação
                 messages.append(ChatMessage(
                     role="tool",
                     content=result_str,
                 ))
 
-        return "Limite máximo de iterações de ferramentas atingido."
+        return "Maximum tool iteration limit reached."

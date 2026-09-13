@@ -3,15 +3,15 @@ from pydantic import BaseModel, Field
 
 
 class PromptRequest(BaseModel):
-    """Payload para envio de pedidos de inferência à IA."""
-    prompt: str = Field(..., description="O texto de entrada para o modelo processar")
-    model: Optional[str] = Field(None, description="Nome do modelo a utilizar (opcional, usa padrão se omitido)")
-    stream: bool = Field(False, description="Se False, retorna a resposta completa de uma só vez")
-    system: Optional[str] = Field(None, description="System prompt opcional para orientar o comportamento")
+    """Payload for submitting inference requests to the AI engine."""
+    prompt: str = Field(..., description="The input prompt text for the model to process")
+    model: Optional[str] = Field(None, description="Model identifier to use (optional, uses default if omitted)")
+    stream: bool = Field(False, description="Whether to stream tokens or return full response at once")
+    system: Optional[str] = Field(None, description="Optional system prompt to guide model behavior")
 
 
 class PromptResponse(BaseModel):
-    """Estrutura da resposta retornada pelo motor de IA."""
+    """Structured response returned by the AI engine."""
     model: str
     response: str
     done: bool
@@ -21,25 +21,25 @@ class PromptResponse(BaseModel):
 
 
 class FunctionCall(BaseModel):
-    """Estrutura de chamada de função enviada pelo modelo."""
+    """Function call specification emitted by the model."""
     name: str
     arguments: Dict[str, Any] = Field(default_factory=dict)
 
 
 class ToolCall(BaseModel):
-    """Estrutura de Tool Call devolvida pelo Ollama."""
+    """Tool Call structure returned by Ollama."""
     function: FunctionCall
 
 
 class ChatMessage(BaseModel):
-    """Mensagem individual no histórico de conversação."""
-    role: str = Field(..., description="Papel da mensagem: 'system', 'user', 'assistant' ou 'tool'")
-    content: str = Field(default="", description="Texto do conteúdo da mensagem")
-    tool_calls: Optional[List[ToolCall]] = Field(None, description="Lista de chamadas de ferramentas requisitadas")
+    """Individual message within a conversation history."""
+    role: str = Field(..., description="Message role: 'system', 'user', 'assistant', or 'tool'")
+    content: str = Field(default="", description="Text body of the message")
+    tool_calls: Optional[List[ToolCall]] = Field(None, description="List of tool calls requested by the assistant")
 
 
 class ChatResponse(BaseModel):
-    """Resposta estruturada do endpoint /api/chat."""
+    """Structured response from the /api/chat endpoint."""
     model: str
     message: ChatMessage
     done: bool
@@ -47,7 +47,7 @@ class ChatResponse(BaseModel):
 
 
 class HealthStatus(BaseModel):
-    """Relatório do estado de saúde e conectividade do Ollama."""
+    """Health and connectivity status report for Ollama service."""
     is_online: bool
     status_code: Optional[int] = None
     available_models: List[str] = []

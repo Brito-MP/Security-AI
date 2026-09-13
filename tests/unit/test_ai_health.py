@@ -10,7 +10,7 @@ def test_check_ai_service_online():
     mock_response.status_code = 200
     mock_response.json.return_value = {
         "models": [
-            {"name": "llama3.2:1b"},
+            {"name": "qwen3.5:4b"},
             {"name": "phi3.5:latest"},
         ]
     }
@@ -18,7 +18,7 @@ def test_check_ai_service_online():
     with patch("requests.get", return_value=mock_response):
         status = check_ai_service()
         assert status.is_online is True
-        assert "llama3.2:1b" in status.available_models
+        assert "qwen3.5:4b" in status.available_models
         assert status.error_message is None
 
 
@@ -27,16 +27,16 @@ def test_check_ai_service_offline():
         status = check_ai_service()
         assert status.is_online is False
         assert status.available_models == []
-        assert "Não foi possível ligar" in status.error_message
+        assert "Failed to connect" in status.error_message
 
 
 def test_is_model_available():
     mock_response = MagicMock()
     mock_response.status_code = 200
     mock_response.json.return_value = {
-        "models": [{"name": "llama3.2:1b"}]
+        "models": [{"name": "qwen3.5:4b"}]
     }
 
     with patch("requests.get", return_value=mock_response):
-        assert is_model_available("llama3.2:1b") is True
+        assert is_model_available("qwen3.5:4b") is True
         assert is_model_available("gpt-4") is False
