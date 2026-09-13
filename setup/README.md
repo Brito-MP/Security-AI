@@ -1,6 +1,7 @@
-# Step-by-Step Guide: Local AI Setup and Initialization
+# Step-by-Step Guide: Local AI Setup and Lifecycle Management
 
-This directory contains automation scripts to initialize the local Ollama AI engine and prepare the **`qwen3.5:4b`** model (or lightweight alternatives such as `qwen3.5:1b` / `qwen2.5:3b`).
+This directory contains automation scripts to initialize the local Ollama AI engine and prepare the **`qwen3.5:4b`** model (or lightweight alternatives such as `qwen3.5:1b` / `qwen2.5:3b`), with automated cleanup of deprecated models (`llama3.2:1b`).
+
 
 ---
 
@@ -15,7 +16,7 @@ This directory contains automation scripts to initialize the local Ollama AI eng
 
 ## 2. Quick Initialization
 
-Choose the appropriate command for your OS:
+Choose the appropriate command for your operating system:
 
 ### Windows (PowerShell - Recommended)
 ```powershell
@@ -39,19 +40,18 @@ chmod +x setup/setup_ai.sh
 
 ---
 
-## 3. AI Lifecycle Management
+## 3. AI Lifecycle Management Commands
 
-| Action | Double-click (Explorer) | Command Line (PowerShell) |
-| :--- | :--- | :--- |
-| **Start AI** | `setup\setup_ai.bat` | `.\setup\setup_ai.ps1` |
-| **Check Status** | `setup\check_status.bat` | `.\setup\check_status.ps1` |
-| **Stop AI** | `setup\stop_ai.bat` | `.\setup\stop_ai.ps1` |
+| Action | Command Line (PowerShell) | Windows Explorer (Double-Click) | Description |
+| :--- | :--- | :--- | :--- |
+| **Start AI** | `.\setup\setup_ai.ps1` | `setup\setup_ai.bat` | Starts `ollama serve`, downloads `qwen3.5:4b`, and removes legacy models. |
+| **Check Status** | `.\setup\check_status.ps1` | `setup\check_status.bat` | Checks Ollama process PID, API status, and models loaded in GPU/VRAM. |
+| **Stop AI** | `.\setup\stop_ai.ps1` | `setup\stop_ai.bat` | Terminates background Ollama processes to free RAM/VRAM. |
 
 ---
 
-## 4. Script Automated Workflow
-
-1. **Detection**: Validates that the `ollama` CLI binary is installed and present in `PATH`.
-2. **Server Startup**: Checks if the API is listening on port `11434`. If offline, spawns `ollama serve` in the background and waits for endpoint readiness.
-3. **Model Verification & Download**: Confirms whether the target model (default: `qwen3.5:4b`) is present. If missing, pulls it automatically.
-4. **Clean Shutdown**: The `stop_ai.*` scripts terminate background Ollama processes to free RAM and GPU VRAM.
+## 4. Next Steps: Talking with the AI
+Once the AI is started, return to the project root and run any of the interaction scripts:
+- **Interactive Agent with Sandbox Files**: `.\.venv\Scripts\python.exe scripts/interactive_agent.py`
+- **AegisLab Scenario Chat**: `.\.venv\Scripts\python.exe scripts/chat_lab.py`
+- **Run Attacks**: `.\.venv\Scripts\python.exe scripts/run_attack.py --target ollama`

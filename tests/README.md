@@ -4,7 +4,7 @@ The test suite is organized into two primary categories:
 1. **Unit Tests (`tests/unit/`)**: Logic verification, HTTP client handling, and isolated tool execution (single file and batch file reading).
 2. **Attack & Security Tests (`tests/attacks/`)**: Security validation, Path Traversal (`../`) containment, and adversarial prompt injections.
 
-By default, pytest is configured to **display real-time outputs and print statements** (`addopts = -s -v` in [pytest.ini](file:///c:/Users/Pedro/source/repos/Security-AI/pytest.ini)).
+By default, pytest is configured to **display real-time outputs and print statements** (`addopts = -s -v` in `pytest.ini`).
 
 ---
 
